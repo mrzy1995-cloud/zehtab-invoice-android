@@ -1,0 +1,49 @@
+build-apk-4.yml
+
+name: Build APK
+
+on:
+
+push:
+
+branches: [main ]
+
+workflow_dispatch:
+
+jobs:
+
+build:
+
+runs-on: ubuntu-latest
+
+steps:
+
+uses: actions/checkout@v4
+
+name: Extract project
+
+run: unzip -o android-project.zip
+
+uses: actions/setup-java@v4 with:
+
+distribution: temurin
+
+java-version: '17'
+
+uses: gradle/actions/setup-gradle@v4 with:
+
+gradle-version: '8.9'
+
+name: Build APK
+
+working-directory: android-project
+
+run: gradle assemble Debug --no-daemon
+
+uses: actions/upload-artifact@v4
+
+with:
+
+name: zehtab-invoice-apk
+
+path: android-project/app/build/outputs/apk/deb ug/app-debug.apk
